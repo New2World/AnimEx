@@ -11,7 +11,7 @@ def parse_arg():
     parser.add_argument('-i', dest='inp_path', required=True)
     parser.add_argument('-o', dest='outp_path', default=None)
     parser.add_argument('-g', dest='gpu', action='store_true', default=False)
-    parser.add_argument('-s', dest='block_size', type=int, default=512)
+    parser.add_argument('-s', dest='block_size', type=int, default=-1)
     parser.add_argument('-m', dest='measure', action='store_true', default=False)
     parser.add_argument('-t', dest='target', default=None)
     return parser.parse_args()
@@ -23,8 +23,8 @@ def main():
         outp_path = os.path.dirname(argv.inp_path)
         outp_path = os.path.join(outp_path, 'output.jpg')
 
-    solver = f_img.ImageFixer(size=argv.block_size)
-    outp = solver.fix(argv.inp_path, outp_path, gpu=argv.gpu)
+    solver = f_img.ImageFixer()
+    outp = solver.fix(argv.inp_path, outp_path, size=argv.block_size, gpu=argv.gpu)
     if argv.measure:
         if argv.target is None:
             raise ValueError('Ground truth needed')
