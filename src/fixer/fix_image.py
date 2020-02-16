@@ -1,7 +1,6 @@
+import cv2
 import math
 import numpy as np
-import skimage
-import skimage.io as skio
 
 from fixer import fixer
 
@@ -13,7 +12,7 @@ class ImageFixer(fixer._Fixer):
         h_max, w_max, _ = image.shape
         h_size, w_size = size
         nh, nw = math.ceil(h_max/h_size), math.ceil(w_max/w_size)
-        batch = np.asarray([image[h*h_size:min((h+1)*h_size,h_max),w*w_size:min((w+1)*w_size,w_max)] for h in range(nh) for w in range(nw)])
+        batch = [image[h*h_size:min((h+1)*h_size,h_max),w*w_size:min((w+1)*w_size,w_max)] for h in range(nh) for w in range(nw)]
         return batch, nh, nw
 
     def __merge_image(self, batch, nh, nw):
@@ -32,7 +31,7 @@ class ImageFixer(fixer._Fixer):
         return outp
     
     def fix(self, inp_path, outp_path, size, gpu):
-        image = skio.imread(inp_path)
+        image = cv2.imread(inp_path)
         image = image/255.
         if size <= 0:
             size = image.shape[:2]
@@ -40,8 +39,8 @@ class ImageFixer(fixer._Fixer):
             size = (size,size)
         outp = self._fix(image, size, gpu)
         if outp_path.endswith('.jpg'):
-            skio.imsave(outp_path, outp, quality=100)
+            cv2.imwrite(outp_path, outp, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
         else:
-            skio.imsave(outp_path, outp)
+            cv2.imwrite(outp_path, outp)
         return outp
 

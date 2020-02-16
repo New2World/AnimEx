@@ -1,7 +1,7 @@
 import os
+import cv2
 import argparse
 
-import skimage.io
 import skimage.metrics
 
 import fixer.fix_image as f_img
@@ -28,7 +28,7 @@ def main():
     if argv.measure:
         if argv.target is None:
             raise ValueError('Ground truth needed')
-        gt = skimage.io.imread(argv.target)
+        gt = cv2.imread(argv.target)
         psnr = skimage.metrics.peak_signal_noise_ratio(gt, outp)
         print(f'PSNR: {psnr}')
 
