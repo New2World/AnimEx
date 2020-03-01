@@ -33,10 +33,10 @@ class ImageFixer(fixer._Fixer):
     def fix(self, inp_path, outp_path, size, gpu):
         image = cv2.imread(inp_path)
         image = image/255.
-        if size <= 0:
-            size = image.shape[:2]
-        else:
+        if type(size) is int:
             size = (size,size)
+        if min(size) <= 0:
+            size = image.shape[:2]
         outp = self._fix(image, size, gpu)
         if outp_path.endswith('.jpg'):
             cv2.imwrite(outp_path, outp, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
