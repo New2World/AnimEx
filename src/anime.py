@@ -26,6 +26,13 @@ def main():
     outp = solver.fix(argv.inp_path, outp_path, size=argv.block_size, gpu=argv.gpu)
     if argv.measure is not None:
         gt = cv2.imread(argv.measure)
+        if not gt.shape == outp.shape:
+            print('UserWarning: the ground truth has different dimensions, and to fit the scale of output the ground truth will be resized')
+            if gt.shape[0] < outp.shape[0]:
+                inter_method = cv2.INTER_CUBIC
+            else:
+                inter_method = cv2.INTER_LANCZOS4
+            gt = cv2.resize(gt, (outp.shape[1],outp.shape[0]), interpolation=inter_method)
         psnr = skimage.metrics.peak_signal_noise_ratio(gt, outp)
         print(f'PSNR: {psnr}')
 
