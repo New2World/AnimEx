@@ -6,7 +6,7 @@ from fixer import fsrcnn
 class _Fixer:
     def __init__(self):
         self.model = fsrcnn.FSRCNN(3,3,scale=1)
-        model_state_dict = torch.load('../model_param/fsrcnnEx-100.pt')
+        model_state_dict = torch.load('../model_param/FSRCNN.pt')
         self.model.load_state_dict(model_state_dict)
         self.model.eval()
     
