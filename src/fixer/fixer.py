@@ -1,12 +1,12 @@
 import torch
 import numpy as np
 
-from fixer import fsrcnn
+from models import fsrcnn
 
 class _Fixer:
     def __init__(self):
         self.model = fsrcnn.FSRCNN(3,3,scale=1)
-        model_state_dict = torch.load('../model_param/FSRCNN.pt')
+        model_state_dict = torch.load('../model_param/FSRCNN1x.pt')
         self.model.load_state_dict(model_state_dict)
         self.model.eval()
     
