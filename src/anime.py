@@ -17,10 +17,13 @@ def parse_arg():
 
 def main():
     argv = parse_arg()
+    file_name = os.path.basename(argv.inp_path)
     outp_path = argv.outp_path
     if outp_path is None:
         outp_path = os.path.dirname(argv.inp_path)
-        outp_path = os.path.join(outp_path, 'output.jpg')
+        outp_path = os.path.join(outp_path, f'{file_name}-output.jpg')
+    elif os.path.isdir(outp_path):
+        outp_path = os.path.join(outp_path, file_name)
 
     solver = f_img.ImageFixer()
     outp = solver.fix(argv.inp_path, outp_path, size=argv.block_size, gpu=argv.gpu)
